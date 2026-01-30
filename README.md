@@ -1,4 +1,4 @@
-# Gate on the Go
+# OnTime - Passenger Departure-Time Prediction
 
 ## Overview
 In order to improve the passenger experience, my team and I developed a forecasting program that helps American Airlines passengers estimate how long it will take to get through the airport and determine their most optimal route to the gate.
