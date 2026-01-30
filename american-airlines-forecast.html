@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>American Airlines - Airport Forecast | DFW</title>
+  
+  <!-- Professional fonts - AA style -->
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <link rel="stylesheet" href="aa-forecast-styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="aa-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <i class="fas fa-plane"></i>
+        <h1>American Airlines</h1>
+      </div>
+      <div class="airport-selector">
+        <label for="airport-select">Airport:</label>
+        <select id="airport-select">
+          <option value="DFW" selected>Dallas/Fort Worth (DFW)</option>
+          <option value="CLT">Charlotte (CLT)</option>
+          <option value="MIA">Miami (MIA)</option>
+          <option value="PHX">Phoenix (PHX)</option>
+          <option value="ORD">Chicago O'Hare (ORD)</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    <!-- Top Section: Flight Input + Result Box -->
+    <section class="top-section">
+      <div class="flight-input-section">
+      <div class="input-card">
+        <h2><i class="fas fa-calendar-alt"></i> Your Flight Details</h2>
+        <div class="input-grid">
+          <div class="input-group">
+            <label for="flight-number">Flight Number</label>
+            <input type="text" id="flight-number" placeholder="AA1234" />
+          </div>
+          <div class="input-group">
+            <label for="departure-time">Departure Time</label>
+            <div class="time-picker">
+              <select id="departure-hour" aria-label="Hour">
+                <option value="" selected>—</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+              <span class="time-separator">:</span>
+              <select id="departure-minute" aria-label="Minute">
+                <option value="" selected>—</option>
+                <option value="00">00</option>
+                <option value="05">05</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+                <option value="35">35</option>
+                <option value="40">40</option>
+                <option value="45">45</option>
+                <option value="50">50</option>
+                <option value="55">55</option>
+              </select>
+              <select id="departure-ampm" aria-label="AM or PM">
+                <option value="" selected>—</option>
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+              </select>
+              <input type="hidden" id="departure-time" value="" />
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="gate">Gate</label>
+            <input type="text" id="gate" placeholder="A15" />
+          </div>
+          <div class="input-group">
+            <label for="terminal">Terminal</label>
+            <select id="terminal">
+              <option value="">Select Terminal</option>
+              <option value="A">Terminal A</option>
+              <option value="B">Terminal B</option>
+              <option value="C">Terminal C</option>
+              <option value="D">Terminal D</option>
+              <option value="E">Terminal E</option>
+            </select>
+          </div>
+          <div class="checkbox-row">
+            <div class="input-group checkbox-group">
+              <label>
+                <input type="checkbox" id="tsa-precheck" />
+                <span>TSA PreCheck</span>
+              </label>
+            </div>
+            <div class="input-group checkbox-group">
+              <label>
+                <input type="checkbox" id="checking-bag" />
+                <span>Checking a bag</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <button class="btn-primary" id="calculate-btn">
+          <i class="fas fa-calculator"></i> Calculate Arrival Time
+        </button>
+      </div>
+      </div>
+      <div class="total-time-card" id="total-time-card">
+        <div class="total-time-placeholder" id="total-time-placeholder">
+          Please enter flight information
+        </div>
+        <div class="total-time-results" id="total-time-results">
+          <div class="total-time-display">
+            <span class="total-label">Total Time Needed</span>
+            <span class="total-value" id="total-time">0 min</span>
+          </div>
+          <div class="arrival-time-display">
+            <span class="arrival-label">Arrive by</span>
+            <span class="arrival-value" id="arrival-time">—</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wait Times Section -->
+    <section class="wait-times-section">
+      <h2><i class="fas fa-clock"></i> Current Wait Times</h2>
+      <div class="wait-times-grid" id="wait-times-grid">
+        <!-- Wait time cards will be dynamically generated -->
+      </div>
+    </section>
+
+    <!-- Process Flow Map -->
+    <section class="process-flow-section">
+      <h2><i class="fas fa-route"></i> Your Optimal Route</h2>
+      <div class="flow-map" id="flow-map">
+        <!-- Process flow will be dynamically generated -->
+      </div>
+    </section>
+
+    <!-- Time Breakdown -->
+    <section class="breakdown-section">
+      <h2><i class="fas fa-list-ul"></i> Time Breakdown</h2>
+      <div class="breakdown-list" id="breakdown-list">
+        <!-- Breakdown items will be dynamically generated -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="aa-footer">
+    <p>&copy; 2026 American Airlines. Airport forecasting powered by real-time data.</p>
+  </footer>
+
+  <script src="aa-forecast-script.js"></script>
+</body>
+</html>
