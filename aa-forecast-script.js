@@ -1,4 +1,5 @@
-// Airport wait time data (simulated - in production, this would come from APIs)
+import { getStatusText, convert12hTo24h, formatArrivalTime12h } from "./lib.js";
+
 const airportData = {
   DFW: {
     name: "Dallas/Fort Worth International Airport",
@@ -155,16 +156,6 @@ function getWaitTimeStatus(categoryId) {
   return airport.waitTimes[categoryId].status;
 }
 
-// Get status text
-function getStatusText(status) {
-  const statusMap = {
-    low: 'Light Traffic',
-    medium: 'Moderate Wait',
-    high: 'Heavy Traffic'
-  };
-  return statusMap[status] || 'Unknown';
-}
-
 // Update all wait times
 function updateWaitTimes() {
   waitTimeCategories.forEach(category => {
@@ -209,15 +200,7 @@ function setupTimePicker() {
     if (!hourVal || !minuteVal || !ampmVal) {
       hiddenInput.value = '';
     } else {
-      let hour = parseInt(hourVal, 10);
-      const ampm = ampmVal;
-      if (ampm === 'AM') {
-        hour = hour === 12 ? 0 : hour;
-      } else {
-        hour = hour === 12 ? 12 : hour + 12;
-      }
-      const hh = String(hour).padStart(2, '0');
-      hiddenInput.value = `${hh}:${minuteVal}`;
+      hiddenInput.value = convert12hTo24h(hourVal, minuteVal, ampmVal);
     }
     hiddenInput.dispatchEvent(new Event('change'));
   }
@@ -313,7 +296,7 @@ function updateProcessFlow() {
   });
   totalTime += adjustedWalkTime;
   
-  // Add buffer time (15 minutes recommended)
+  // Add buffer time
   const bufferTime = 15;
   steps.push({ name: 'Buffer Time (Recommended)', time: bufferTime, icon: 'fa-clock' });
   totalTime += bufferTime;
@@ -324,17 +307,11 @@ function updateProcessFlow() {
   // Update total time
   document.getElementById('total-time').textContent = `${totalTime} min`;
   
-  // Calculate arrival time
-  const [hours, minutes] = departureTime.split(':').map(Number);
-  const departureDate = new Date();
-  departureDate.setHours(hours, minutes, 0, 0);
-  
-  const arrivalDate = new Date(departureDate.getTime() - totalTime * 60000);
-  const hours12 = arrivalDate.getHours() % 12 || 12;
-  const arrivalMinutes = String(arrivalDate.getMinutes()).padStart(2, '0');
-  const ampm = arrivalDate.getHours() < 12 ? 'AM' : 'PM';
-  
-  document.getElementById('arrival-time').textContent = `${hours12}:${arrivalMinutes} ${ampm}`;
+  // Calculate and display arrival time
+  document.getElementById('arrival-time').textContent = formatArrivalTime12h(
+    departureTime,
+    totalTime
+  );
   
   // Render breakdown
   renderBreakdown(steps);
@@ -413,13 +390,7 @@ function renderBreakdown(steps) {
   breakdownList.appendChild(totalItem);
 }
 
-// Simulate real-time updates (in production, this would fetch from APIs)
 function fetchRealTimeData() {
-  // This would make API calls to:
-  // - Airport security wait time APIs
-  // - Airport operations APIs
-  // - Historical data for predictions
-  
-  // For now, we simulate with realistic variations
+
   updateWaitTimes();
 }
